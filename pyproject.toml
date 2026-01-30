@@ -1,0 +1,31 @@
+[project]
+name = "indicconversations"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "beautifulsoup4>=4.14.3",
+    "fastapi>=0.128.0",
+    "huggingface-hub>=0.36.0",
+    "ipykernel>=7.1.0",
+    "langchain>=1.2.7",
+    "langchain-community>=0.4.1",
+    "langchain-core>=1.2.7",
+    "langchain-huggingface>=1.2.0",
+    "langchain-milvus>=0.3.3",
+    "librosa>=0.10.0",
+    "numba>=0.57",
+    "pymilvus[milvus-lite]>=2.6.7",
+    "python-dotenv>=1.2.1",
+    "requests>=2.32.5",
+    "sarvamai>=0.1.22",
+    "sentence-transformers>=5.2.2",
+    "sounddevice>=0.5.5",
+    "streamlit>=1.53.1",
+    "streamlit-mic-recorder>=0.0.8",
+    "tokenizers>=0.22.2",
+    "transformers>=4.57.6",
+    "uvicorn>=0.40.0",
+    "watchdog>=6.0.0",
+]
