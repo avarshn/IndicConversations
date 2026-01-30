@@ -23,9 +23,8 @@ Follow the official guide:
 ### 2. Set Up the Environment
 
 ```bash
-uv init
-source .venv/bin/activate
 uv sync
+source .venv/bin/activate
 ```
 
 This will:
@@ -39,6 +38,9 @@ This will:
 
 Create a `.env` file and add your API keys/tokens as shown in `.env.example`.
 
+```bash
+cp .env.example .env
+```
 ---
 
 # ▶️ Running the Application
@@ -61,8 +63,8 @@ mkdir db
 
 python src/tasks/task_1_2_data_collection_ingestion.py \
   --topic "Python language" \
-  --collection_name "wiki_docs" \
-  --uri "./wiki.db"
+  --collection_name "wikipedia_docs" \
+  --uri "./db/wiki.db"
 ```
 
 ### Example Topics
@@ -80,7 +82,7 @@ You can run this multiple times for different topics to expand your knowledge ba
 ## Step 2: Launch the Streamlit UI
 
 ```bash
-uv run streamlit run app.py
+uv run streamlit run app.py -- --collection_name "wiki_docs" --uri "./db/wiki.db"
 ```
 
 This launches an interactive **Streamlit UI** for multilingual voice conversations.
@@ -89,11 +91,11 @@ This launches an interactive **Streamlit UI** for multilingual voice conversatio
 
 # Features
 
-✅ Voice-based interaction
-✅ Wikipedia-grounded responses
-✅ Source citations
-✅ Multilingual conversation
-✅ Multilingual output
+* Voice-based interaction
+* Wikipedia-grounded responses
+* Source citations
+* Multilingual conversation
+* Multilingual output
 
 ### Supported Languages
 
@@ -111,13 +113,14 @@ Input:
 * Telugu
 * English
 
-Output (currently limited to top 5):
+Output:
 
 * Hindi
 * Bengali
 * Marathi
 * Telugu
 * Tamil
+* Punjabi
 
 *(Easily extendable to more languages.)*
 
