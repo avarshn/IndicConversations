@@ -5,7 +5,7 @@ A multilingual, voice-enabled chatbot that retrieves grounded information from W
 
 ## Clone the repo
 ```bash
-[git clone https://github.com/avarshn/IndicConversations.git](https://github.com/avarshn/IndicConversations.git)
+git clone https://github.com/avarshn/IndicConversations.git
 cd IndicConversations
 ```
 
