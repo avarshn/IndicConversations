@@ -42,14 +42,13 @@ Create a `.env` file and add your API keys/tokens as shown in `.env.example`.
 cp .env.example .env
 ```
 ---
-
 # ▶️ Running the Application
 
-## Step 1: Create a Knowledge Base (Wikipedia Grounding)
+## Step 1: Knowledge Base (Wikipedia Grounding)
 
-Before launching the UI, you must build a knowledge base.
+> **Note:** You can skip this step. A pre-populated database (`./db/wiki.db`) with sample topics such as *Python language*, *Roman Empire*, *Industrial Revolution*, and *List of Tallest Buildings* is already included in this repository.
 
-The script below:
+Normally, this step would:
 
 * Performs a web search
 * Fetches the top Wikipedia link
@@ -58,27 +57,25 @@ The script below:
 * Chunks the text
 * Stores embeddings in a vector database
 
-```bash
-mkdir db
+**Adding new content:**
 
-# This step may take some time the first time it runs,
-# as it also downloads and loads an embedding model from HuggingFace.
+* To **add a new topic** to the existing database, specify `--topic` and point to the current database:
+
+```bash
 python src/tasks/task_1_2_data_collection_ingestion.py \
-  --topic "Python language" \
+  --topic "New Topic" \
   --collection_name "wikipedia_docs" \
   --uri "./db/wiki.db"
 ```
 
-### Example Topics
+* To **create a completely new database**, specify a new `--collection_name` and `--uri`:
 
 ```bash
-python src/tasks/task_1_2_data_collection_ingestion.py --topic "Python language"
-python src/tasks/task_1_2_data_collection_ingestion.py --topic "Artificial Intelligence"
-python src/tasks/task_1_2_data_collection_ingestion.py --topic "Industrial Revolution"
+python src/tasks/task_1_2_data_collection_ingestion.py \
+  --topic "Another Topic" \
+  --collection_name "new_wiki_docs" \
+  --uri "./db/new_wiki.db"
 ```
-
-You can run this multiple times for different topics to expand your knowledge base.
-
 ---
 
 ## Step 2: Launch the Streamlit UI

@@ -26,8 +26,6 @@ args, _ = parser.parse_known_args()
 COLLECTION_NAME = args.collection_name
 URI = args.uri
 
-print("Args", args)
-
 # ---------- CACHE CONNECTION ----------
 @st.cache_resource
 def init_once(uri):
