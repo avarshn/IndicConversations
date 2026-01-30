@@ -84,7 +84,7 @@ You can run this multiple times for different topics to expand your knowledge ba
 ## Step 2: Launch the Streamlit UI
 
 ```bash
-uv run streamlit run app.py -- --collection_name "wiki_docs" --uri "./db/wiki.db"
+uv run streamlit run app.py -- --collection_name "wikipedia_docs" --uri "./db/wiki.db"
 ```
 
 This launches an interactive **Streamlit UI** for multilingual voice conversations.
