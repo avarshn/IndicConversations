@@ -61,6 +61,8 @@ The script below:
 ```bash
 mkdir db
 
+# This step may take some time the first time it runs,
+# as it also downloads and loads an embedding model from HuggingFace.
 python src/tasks/task_1_2_data_collection_ingestion.py \
   --topic "Python language" \
   --collection_name "wikipedia_docs" \
