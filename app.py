@@ -39,7 +39,7 @@ st.divider()
 # ---------- Language selection ----------
 output_lang = st.selectbox(
     "Select output language:",
-    options=["English", "Hindi", "Bengali", "Marathi", "Telugu", "Tamil"],
+    options=["English", "Hindi", "Bengali", "Marathi", "Telugu", "Tamil", "Punjabi"],
     index=1,  # default Hindi
 )
 
