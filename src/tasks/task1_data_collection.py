@@ -3,6 +3,7 @@ import sys
 
 from pathlib import Path
 
+# Set Project Directory
 try:    
     current_file = Path(__file__).resolve()
 
@@ -19,9 +20,15 @@ import logging
 
 import argparse
 from dotenv import load_dotenv
+from huggingface_hub import login
+from pymilvus import connections
 
 from src.search.search_api import get_search_results
 from src.search.wikipedia_api import WikipediaAPI
+from src.log.log_config import setup_logging
+
+from src.vector_db.doc_chunking import get_chunks, merge_small_documents_with_metadata
+from src.vector_db.initialize_db import create_load_vector_store
 from src.log.log_config import setup_logging
 
 if __name__ == "__main__":
@@ -34,10 +41,15 @@ if __name__ == "__main__":
 
     # Add arguments
     parser.add_argument("--topic", type=str, help="Topic you want to search")
+    parser.add_argument("--collection_name", type=str, default="wikipedia_docs", help="Name of the vector database collection")
+    parser.add_argument("--uri", type=str, default=f"{PROJECT_DIR}/db/wiki.db", help="Path or URI for the vector database")
     
     args = parser.parse_args()
 
     query = args.topic
+    COLLECTION_NAME = args.collection_name
+    URI = args.uri
+
     logger.info("Topic / Query : '%s'", query)
 
     # Reformat Query - To search within Wikipedia only
@@ -70,17 +82,34 @@ if __name__ == "__main__":
         
     logger.info(f"\nSaved to '%s'", output_file)
 
-# Usage
-# python src/tasks/task1_data_collection.py --topic "Tourism in India"
+    # Login - Required for Embedding Model - From HuggingFace
+    login(token=os.environ['HF_TOKEN'])
 
-# Topics -
-# Python language
-# Transformers Movie
-# ASR Transcription
-# Fall of Rome
-# Industrial Revolution
-# Leonardo da Vinci
-# Marie Curie
-# Artificial Intelligence
-# Quantum Cryptography
-# List of Tallest Buildings
+    source_url = top_ranked_url
+    filename = output_file
+
+    # Read the text file
+    with open(filename, "r") as fout:
+        content = fout.read()
+
+    # Content Chunking
+    all_chunks = get_chunks(content, source_url)
+    chunks = merge_small_documents_with_metadata(all_chunks, min_size=150)
+
+    # Connect to Milvus
+    connections.connect(uri=URI)
+
+    # Load / Initialize Vector Store
+    vector_store = create_load_vector_store(COLLECTION_NAME, URI)
+
+    # Add chunks to Vector DB
+    vector_store.add_documents(chunks)
+
+
+# Usage
+# python src/tasks/task_1_2_data_collection_ingestion.py --topic "Tourism in India" --collection_name "wiki_docs" --uri "/tmp/wiki.db"
+# python src/tasks/task_1_2_data_collection_ingestion.py --topic "Tourism in India"
+# python src/tasks/task_1_2_data_collection_ingestion.py --topic "Python language"
+# python src/tasks/task_1_2_data_collection_ingestion.py --topic "Fall of Rome"
+# python src/tasks/task_1_2_data_collection_ingestion.py --topic "Industrial Revolution"
+# python src/tasks/task_1_2_data_collection_ingestion.py --topic "List of Tallest Buildings"

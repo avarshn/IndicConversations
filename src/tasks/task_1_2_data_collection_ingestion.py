@@ -42,8 +42,8 @@ if __name__ == "__main__":
     # Add arguments
     parser.add_argument("--topic", type=str, help="Topic you want to search")
     parser.add_argument("--collection_name", type=str, default="wikipedia_docs", help="Name of the vector database collection")
-    parser.add_argument("--uri", type=str, default=f"{PROJECT_DIR}/db/milvus_example.db", help="Path or URI for the vector database")
-    
+    parser.add_argument("--uri", type=str, default=f"{PROJECT_DIR}/db/wiki.db", help="Path or URI for the vector database")
+    d
     args = parser.parse_args()
 
     query = args.topic

@@ -1,3 +1,5 @@
+import argparse
+
 import streamlit as st
 from streamlit_mic_recorder import mic_recorder
 from src.tasks.task5_rag_pipeline_offline import run_rag_pipeline
@@ -7,17 +9,37 @@ from dotenv import load_dotenv
 from src.log.log_config import setup_logging
 from pymilvus import connections
 
-COLLECTION_NAME = "wikipedia_docs"
-URI = "./db/milvus_example.db"
-
 
 logger = logging.getLogger(__name__)
-setup_logging()
 
-load_dotenv()
 
-# Connect to Milvus
-connections.connect(uri=URI)
+# ---------- ARGPARSE ----------
+# Parser
+parser = argparse.ArgumentParser(description="Chat with Conversational Agent")
+
+# Add arguments
+parser.add_argument("--collection_name", type=str, help="Name of the vector database collection")
+parser.add_argument("--uri", type=str, help="Path or URI for the vector database")
+
+args, _ = parser.parse_known_args()
+
+COLLECTION_NAME = args.collection_name
+URI = args.uri
+
+print("Args", args)
+
+# ---------- CACHE CONNECTION ----------
+@st.cache_resource
+def init_once(uri):
+    load_dotenv()
+    setup_logging()
+
+    connections.connect(uri=uri)
+    return True
+
+# Connect to Milvus, Setup Logging, Load env variables
+init_once(URI)
+
 
 # ---------- STREAMLIT UI ----------
 
